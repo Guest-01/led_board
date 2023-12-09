@@ -15,14 +15,14 @@ class MakeScreen extends StatefulWidget {
 class _MakeScreenState extends State<MakeScreen> {
   TextEditingController controller = TextEditingController();
   List<(double size, String label)> fontSizeList = [
-    (86, '작게'),
+    // (86, '작게'),
     (128, '보통'),
     (172, '크게'),
   ];
   List<(double speed, String label)> speedList = [
     (0, '정지'),
-    (100, '보통'),
-    (180, '빠름'),
+    (100, '이동'),
+    // (180, '빠름'),
   ];
   List<Color> colorList = [Colors.black, Colors.white, Colors.amber];
 

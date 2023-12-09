@@ -52,6 +52,8 @@ class _LedScreenState extends State<LedScreen> {
                   color: widget.textColor,
                   fontSize: widget.fontSize,
                 ),
+                overflow: TextOverflow.clip,
+                maxLines: 1,
               )
             : Marquee(
                 text: widget.content,
@@ -59,7 +61,7 @@ class _LedScreenState extends State<LedScreen> {
                   color: widget.textColor,
                   fontSize: widget.fontSize,
                 ),
-                velocity: widget.speed,
+                velocity: widget.speed + 30, // 미리보기보다 조금 느림
                 blankSpace: 30,
               ),
       ),
