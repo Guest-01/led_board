@@ -17,6 +17,8 @@ class MainApp extends StatelessWidget {
           seedColor: Colors.indigo,
         ),
       ),
+      darkTheme: ThemeData.dark(),
+      themeMode: ThemeMode.system,
       home: const MakeScreen(),
     );
   }
