@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:led_board/widgets/color_circle.dart';
 
 class ColorCircleRow extends StatefulWidget {
-  final Color initial;
+  final Color selected;
   final List<Color> colorList;
-  final Function(Color) onChange;
+  final Function(Color) onSelectionChanged;
 
   const ColorCircleRow({
     super.key,
-    required this.initial,
+    required this.selected,
     required this.colorList,
-    required this.onChange,
+    required this.onSelectionChanged,
   });
 
   @override
@@ -18,13 +18,20 @@ class ColorCircleRow extends StatefulWidget {
 }
 
 class _ColorCircleRowState extends State<ColorCircleRow> {
-  late int selected;
+  late int selectedIdx;
 
   @override
   void initState() {
     super.initState();
-    selected =
-        widget.colorList.indexWhere((element) => element == widget.initial);
+    selectedIdx =
+        widget.colorList.indexWhere((element) => element == widget.selected);
+  }
+
+  @override
+  void didUpdateWidget(covariant ColorCircleRow oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    selectedIdx =
+        widget.colorList.indexWhere((element) => element == widget.selected);
   }
 
   @override
@@ -33,11 +40,11 @@ class _ColorCircleRowState extends State<ColorCircleRow> {
       children: [
         for (var (idx, color) in widget.colorList.indexed) ...[
           ColorCircle(
-            isActive: idx == selected,
+            isActive: idx == selectedIdx,
             color: color,
             onTap: (color) {
-              selected = idx;
-              widget.onChange(color);
+              selectedIdx = idx;
+              widget.onSelectionChanged(color);
               setState(() {});
             },
           ),

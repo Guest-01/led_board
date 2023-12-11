@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:led_board/led_screen.dart';
 import 'package:led_board/widgets/color_circle_row.dart';
 import 'package:marquee/marquee.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class MakeScreen extends StatefulWidget {
   const MakeScreen({
@@ -13,6 +14,7 @@ class MakeScreen extends StatefulWidget {
 }
 
 class _MakeScreenState extends State<MakeScreen> {
+  late SharedPreferences _prefs;
   TextEditingController controller = TextEditingController();
   List<(double size, String label)> fontSizeList = [
     // (86, '작게'),
@@ -24,22 +26,46 @@ class _MakeScreenState extends State<MakeScreen> {
     (100, '이동'),
     // (180, '빠름'),
   ];
-  List<Color> colorList = [Colors.black, Colors.white, Colors.amber];
+  List<Color> colorList = [
+    Colors.black,
+    Colors.white,
+    Color(Colors.amber.value)
+  ];
 
   late double fontSize;
   late double speed;
   late Color textColor;
   late Color backgroundColor;
 
+  void getLastState() async {
+    _prefs = await SharedPreferences.getInstance();
+    if (_prefs.getKeys().isEmpty) return;
+    setState(() {
+      controller.text = _prefs.getString('text')!;
+      fontSize = _prefs.getDouble('fontSize')!;
+      speed = _prefs.getDouble('speed')!;
+      textColor = Color(_prefs.getInt('textColor')!);
+      backgroundColor = Color(_prefs.getInt('backgroundColor')!);
+    });
+  }
+
+  void saveLastState() async {
+    _prefs.setString('text', controller.text);
+    _prefs.setDouble('fontSize', fontSize);
+    _prefs.setDouble('speed', speed);
+    _prefs.setInt('textColor', textColor.value);
+    _prefs.setInt('backgroundColor', backgroundColor.value);
+  }
+
   @override
   void initState() {
-    // TODO: 저장된 마지막 값 불러오기
     super.initState();
     controller.text = "";
     fontSize = 128;
     speed = 0;
     textColor = Colors.white;
     backgroundColor = Colors.black;
+    getLastState();
   }
 
   @override
@@ -55,7 +81,7 @@ class _MakeScreenState extends State<MakeScreen> {
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
+            padding: const EdgeInsets.symmetric(horizontal: 10),
             child: Column(
               children: [
                 const Placeholder(
@@ -116,7 +142,7 @@ class _MakeScreenState extends State<MakeScreen> {
                       borderRadius: BorderRadius.circular(30),
                     ),
                     filled: true,
-                    hintText: '전광판에 보여줄 내용을 입력해주세요',
+                    hintText: '여기에 내용을 입력하세요',
                     isDense: true,
                   ),
                   onChanged: (text) {
@@ -203,9 +229,9 @@ class _MakeScreenState extends State<MakeScreen> {
                       children: [
                         const Text('글자색'),
                         ColorCircleRow(
-                          initial: textColor,
+                          selected: textColor,
                           colorList: colorList,
-                          onChange: (color) {
+                          onSelectionChanged: (color) {
                             textColor = color;
                             setState(() {});
                           },
@@ -229,9 +255,9 @@ class _MakeScreenState extends State<MakeScreen> {
                       children: [
                         const Text('배경색'),
                         ColorCircleRow(
-                          initial: backgroundColor,
+                          selected: backgroundColor,
                           colorList: colorList,
-                          onChange: (color) {
+                          onSelectionChanged: (color) {
                             backgroundColor = color;
                             setState(() {});
                           },
@@ -240,16 +266,18 @@ class _MakeScreenState extends State<MakeScreen> {
                     ),
                   ),
                 ),
-                const Padding(
-                  padding: EdgeInsets.symmetric(vertical: 15),
-                  child: Text('TODO: 글꼴, 마지막 값 기억'),
-                ),
+                // const Padding(
+                //   padding: EdgeInsets.symmetric(vertical: 15),
+                //   child: Text('TODO: 글꼴, 마지막 값 기억'),
+                // ),
+                const SizedBox(height: 10),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     foregroundColor: Colors.white,
                     backgroundColor: Colors.blue.shade700,
                   ),
                   onPressed: () {
+                    saveLastState();
                     Navigator.of(context).push(
                       MaterialPageRoute(
                         builder: (context) => LedScreen(
@@ -262,7 +290,7 @@ class _MakeScreenState extends State<MakeScreen> {
                       ),
                     );
                   },
-                  child: const Text('시작'),
+                  child: const Text('시작하기'),
                 )
               ],
             ),
