@@ -1,5 +1,9 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:led_board/led_screen.dart';
+import 'package:led_board/widgets/ad_or_placeholder.dart';
 import 'package:led_board/widgets/color_circle_row.dart';
 import 'package:marquee/marquee.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -15,6 +19,12 @@ class MakeScreen extends StatefulWidget {
 }
 
 class _MakeScreenState extends State<MakeScreen> {
+  BannerAd? _bannerAd;
+
+  final adUnitId = Platform.isAndroid
+      ? 'ca-app-pub-3940256099942544/6300978111'
+      : 'ca-app-pub-3940256099942544/2934735716';
+
   late SharedPreferences _prefs;
 
   TextEditingController controller = TextEditingController();
@@ -74,12 +84,32 @@ class _MakeScreenState extends State<MakeScreen> {
     PackageInfo.fromPlatform().then((value) {
       version = value.version;
     });
+    _loadAd();
   }
 
   @override
   void dispose() {
     controller.dispose();
+    _bannerAd?.dispose();
     super.dispose();
+  }
+
+  void _loadAd() async {
+    BannerAd(
+      adUnitId: adUnitId,
+      request: const AdRequest(),
+      size: AdSize.banner,
+      listener: BannerAdListener(
+        onAdLoaded: (ad) {
+          setState(() {
+            _bannerAd = ad as BannerAd;
+          });
+        },
+        onAdFailedToLoad: (ad, err) {
+          ad.dispose();
+        },
+      ),
+    ).load();
   }
 
   @override
@@ -96,15 +126,7 @@ class _MakeScreenState extends State<MakeScreen> {
                 padding: const EdgeInsets.symmetric(horizontal: 10),
                 child: Column(
                   children: [
-                    const Placeholder(
-                      color: Colors.grey,
-                      strokeWidth: 2,
-                      child: SizedBox(
-                        width: 360,
-                        height: 50,
-                        child: Center(child: Text('Google Ads')),
-                      ),
-                    ),
+                    AdOrPlaceholder(ad: _bannerAd),
                     const SizedBox(height: 10),
                     Container(
                       height: 140,
@@ -253,10 +275,6 @@ class _MakeScreenState extends State<MakeScreen> {
                         ),
                       ],
                     ),
-                    // const Padding(
-                    //   padding: EdgeInsets.symmetric(vertical: 15),
-                    //   child: Text('TODO: 글꼴, 마지막 값 기억'),
-                    // ),
                     const Divider(thickness: 0.0),
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
