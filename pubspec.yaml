@@ -10,6 +10,7 @@ dependencies:
   flutter:
     sdk: flutter
   marquee: ^2.2.3
+  package_info_plus: ^5.0.1
   shared_preferences: ^2.2.2
 
 dev_dependencies:

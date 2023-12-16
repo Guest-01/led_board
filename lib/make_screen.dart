@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:led_board/led_screen.dart';
 import 'package:led_board/widgets/color_circle_row.dart';
 import 'package:marquee/marquee.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class MakeScreen extends StatefulWidget {
@@ -15,6 +16,7 @@ class MakeScreen extends StatefulWidget {
 
 class _MakeScreenState extends State<MakeScreen> {
   late SharedPreferences _prefs;
+
   TextEditingController controller = TextEditingController();
   List<(double size, String label)> fontSizeList = [
     // (86, '작게'),
@@ -36,6 +38,8 @@ class _MakeScreenState extends State<MakeScreen> {
   late double speed;
   late Color textColor;
   late Color backgroundColor;
+
+  late String version;
 
   void getLastState() async {
     _prefs = await SharedPreferences.getInstance();
@@ -66,6 +70,10 @@ class _MakeScreenState extends State<MakeScreen> {
     textColor = Colors.white;
     backgroundColor = Colors.black;
     getLastState();
+    version = "";
+    PackageInfo.fromPlatform().then((value) {
+      version = value.version;
+    });
   }
 
   @override
@@ -274,6 +282,7 @@ class _MakeScreenState extends State<MakeScreen> {
                   ],
                 ),
               ),
+              Text('v$version'),
             ],
           ),
         ),

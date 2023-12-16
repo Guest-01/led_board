@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:led_board/make_screen.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(const MainApp());
 }
 
