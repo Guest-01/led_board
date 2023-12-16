@@ -34,7 +34,7 @@ class ColorCircle extends StatelessWidget {
     if (isActive) {
       return Border.all(width: 2, color: Theme.of(context).primaryColor);
     }
-    return null;
+    return Border.all(width: 1, color: Colors.black54);
   }
 
   @override

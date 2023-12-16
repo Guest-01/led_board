@@ -77,87 +77,98 @@ class _MakeScreenState extends State<MakeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // backgroundColor: Colors.grey.shade100,
+      backgroundColor: Theme.of(context).brightness == Brightness.light
+          ? Colors.grey.shade100
+          : null,
       body: SafeArea(
         child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            child: Column(
-              children: [
-                const Placeholder(
-                  color: Colors.grey,
-                  strokeWidth: 2,
-                  child: SizedBox(
-                    width: 360,
-                    height: 50,
-                    child: Center(child: Text('Google Ads')),
-                  ),
-                ),
-                const SizedBox(height: 10),
-                Container(
-                  height: 140,
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: backgroundColor,
-                  ),
-                  child: Center(
-                    child: speed == 0 ||
-                            controller.text
-                                .isEmpty // Marquee text should be not empty
-                        ? Text(
-                            controller.text,
-                            style: TextStyle(
-                              color: textColor,
-                              fontSize: fontSize / 2.2, // 실제 비율에 맞추기 위함
-                            ),
-                            overflow: TextOverflow.clip,
-                            maxLines: 1,
-                          )
-                        : Marquee(
-                            text: controller.text,
-                            style: TextStyle(
-                              color: textColor,
-                              fontSize: fontSize / 2.2,
-                            ),
-                            velocity: speed,
-                            blankSpace: 30,
-                            pauseAfterRound: Duration.zero,
-                            accelerationDuration: Duration.zero,
-                            decelerationDuration: Duration.zero,
-                          ),
-                  ),
-                ),
-                const Text('미리보기'),
-                const SizedBox(height: 10),
-                TextField(
-                  controller: controller,
-                  textAlign: TextAlign.center,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(30),
-                      borderSide: BorderSide.none,
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                child: Column(
+                  children: [
+                    const Placeholder(
+                      color: Colors.grey,
+                      strokeWidth: 2,
+                      child: SizedBox(
+                        width: 360,
+                        height: 50,
+                        child: Center(child: Text('Google Ads')),
+                      ),
                     ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(30),
+                    const SizedBox(height: 10),
+                    Container(
+                      height: 140,
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: backgroundColor,
+                      ),
+                      child: Center(
+                        child: speed == 0 ||
+                                controller.text
+                                    .isEmpty // Marquee text should be not empty
+                            ? Text(
+                                controller.text,
+                                style: TextStyle(
+                                  color: textColor,
+                                  fontSize: fontSize / 2.2, // 실제 비율에 맞추기 위함
+                                ),
+                                overflow: TextOverflow.clip,
+                                maxLines: 1,
+                              )
+                            : Marquee(
+                                text: controller.text,
+                                style: TextStyle(
+                                  color: textColor,
+                                  fontSize: fontSize / 2.2,
+                                ),
+                                velocity: speed,
+                                blankSpace: 30,
+                                pauseAfterRound: Duration.zero,
+                                accelerationDuration: Duration.zero,
+                                decelerationDuration: Duration.zero,
+                              ),
+                      ),
                     ),
-                    filled: true,
-                    hintText: '여기에 내용을 입력하세요',
-                    isDense: true,
-                  ),
-                  onChanged: (text) {
-                    setState(() {});
-                  },
+                    const Text('미리보기'),
+                    const SizedBox(height: 10),
+                    TextField(
+                      controller: controller,
+                      textAlign: TextAlign.center,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(30),
+                          borderSide: BorderSide.none,
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(30),
+                        ),
+                        filled: true,
+                        hintText: '여기에 내용을 입력하세요',
+                        isDense: true,
+                      ),
+                      onChanged: (text) {
+                        setState(() {});
+                      },
+                    ),
+                  ],
                 ),
-                const SizedBox(height: 10),
-                Card(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30),
-                  ),
-                  elevation: 3,
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(20, 6, 7, 6),
-                    child: Row(
+              ),
+              const SizedBox(height: 10),
+              Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(30),
+                  color: Theme.of(context).brightness == Brightness.light
+                      ? Colors.white
+                      : Colors.white10,
+                ),
+                child: Column(
+                  children: [
+                    Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         const Text('글자크기'),
@@ -180,16 +191,8 @@ class _MakeScreenState extends State<MakeScreen> {
                         )
                       ],
                     ),
-                  ),
-                ),
-                Card(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30),
-                  ),
-                  elevation: 3,
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(20, 6, 7, 6),
-                    child: Row(
+                    const Divider(thickness: 0.0),
+                    Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         const Text('글자속도'),
@@ -212,19 +215,8 @@ class _MakeScreenState extends State<MakeScreen> {
                         )
                       ],
                     ),
-                  ),
-                ),
-                Card(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30),
-                  ),
-                  elevation: 3,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 20,
-                      vertical: 6,
-                    ),
-                    child: Row(
+                    const Divider(thickness: 0.0),
+                    Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         const Text('글자색'),
@@ -238,19 +230,8 @@ class _MakeScreenState extends State<MakeScreen> {
                         ),
                       ],
                     ),
-                  ),
-                ),
-                Card(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30),
-                  ),
-                  elevation: 3,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 20,
-                      vertical: 6,
-                    ),
-                    child: Row(
+                    const Divider(thickness: 0.0),
+                    Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         const Text('배경색'),
@@ -264,36 +245,36 @@ class _MakeScreenState extends State<MakeScreen> {
                         ),
                       ],
                     ),
-                  ),
-                ),
-                // const Padding(
-                //   padding: EdgeInsets.symmetric(vertical: 15),
-                //   child: Text('TODO: 글꼴, 마지막 값 기억'),
-                // ),
-                const SizedBox(height: 10),
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    foregroundColor: Colors.white,
-                    backgroundColor: Colors.blue.shade700,
-                  ),
-                  onPressed: () {
-                    saveLastState();
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (context) => LedScreen(
-                          backgroundColor: backgroundColor,
-                          textColor: textColor,
-                          content: controller.text,
-                          fontSize: fontSize,
-                          speed: speed,
-                        ),
+                    // const Padding(
+                    //   padding: EdgeInsets.symmetric(vertical: 15),
+                    //   child: Text('TODO: 글꼴, 마지막 값 기억'),
+                    // ),
+                    const Divider(thickness: 0.0),
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        foregroundColor: Colors.white,
+                        backgroundColor: Colors.blue.shade700,
                       ),
-                    );
-                  },
-                  child: const Text('시작하기'),
-                )
-              ],
-            ),
+                      onPressed: () {
+                        saveLastState();
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => LedScreen(
+                              backgroundColor: backgroundColor,
+                              textColor: textColor,
+                              content: controller.text,
+                              fontSize: fontSize,
+                              speed: speed,
+                            ),
+                          ),
+                        );
+                      },
+                      child: const Text('시작하기'),
+                    ),
+                  ],
+                ),
+              ),
+            ],
           ),
         ),
       ),
