@@ -1,8 +1,7 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:led_board/led_screen.dart';
+import 'package:led_board/secrets.dart';
 import 'package:led_board/widgets/ad_or_placeholder.dart';
 import 'package:led_board/widgets/color_circle_row.dart';
 import 'package:marquee/marquee.dart';
@@ -21,9 +20,7 @@ class MakeScreen extends StatefulWidget {
 class _MakeScreenState extends State<MakeScreen> {
   BannerAd? _bannerAd;
 
-  final adUnitId = Platform.isAndroid
-      ? 'ca-app-pub-3940256099942544/6300978111'
-      : 'ca-app-pub-3940256099942544/2934735716';
+  final adUnitId = bannerId;
 
   late SharedPreferences _prefs;
 
